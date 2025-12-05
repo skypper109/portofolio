@@ -1,0 +1,26 @@
+<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .small-a {
+      font-family: 'Georgia', serif;
+      font-size: 72px;
+      font-weight: 300;
+      fill: #1A1A1A;
+    }
+    .big-d {
+      font-family: 'Poppins', sans-serif;
+      font-size: 140px;
+      font-weight: 700;
+      fill: #111;
+    }
+    .subtitle {
+      font-family: 'Poppins', sans-serif;
+      font-size: 20px;
+      fill: #444;
+      letter-spacing: 2px;
+    }
+  </style>
+
+  <text x="40" y="80" class="small-a">a</text>
+  <text x="120" y="150" class="big-d">D</text>
+  <text x="40" y="190" class="subtitle">ARCHITECTE DIGITAL</text>
+</svg>
