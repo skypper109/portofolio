@@ -3,269 +3,374 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio | Ibrahim Sory Diallo</title>
+    <title>Ibrahim Sory Diallo | Architecte Digital & Développeur Fullstack</title>
+    <meta name="description" content="Portfolio d'Ibrahim Sory Diallo — Développeur Fullstack & Architecte Logiciel. Java, Spring Boot, Angular, Flutter, Laravel, Docker." />
 
-    <link rel="shortcut icon" href="logo-ad.svg" type="image/x-icon">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="logo-ad.svg" type="image/x-icon" />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Outfit:wght@300;500;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" async></script>
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- Canvas d'animation code & particules -->
     <canvas id="bg-canvas"></canvas>
 
-    <div class="nav-dots">
-      <div class="dot active" onclick="scrollToSlide(0)"></div>
-      <div class="dot" onclick="scrollToSlide(1)"></div>
-      <div class="dot" onclick="scrollToSlide(2)"></div>
-      <div class="dot" onclick="scrollToSlide(3)"></div>
-      <div class="dot" onclick="scrollToSlide(4)"></div>
+    <!-- Halos lumineux d'ambiance -->
+    <div class="ambient-glow glow-top"></div>
+    <div class="ambient-glow glow-bottom"></div>
+
+    <!-- Indicateurs de section (Dots à droite) -->
+    <nav class="nav-indicators" aria-label="Navigation des sections">
+      <button class="nav-dot active" data-index="0" onclick="goToSection(0)" aria-label="Section Accueil">
+        <span class="dot-ring"></span>
+        <span class="dot-tooltip">01. Accueil</span>
+      </button>
+      <button class="nav-dot" data-index="1" onclick="goToSection(1)" aria-label="Section Profil">
+        <span class="dot-ring"></span>
+        <span class="dot-tooltip">02. Profil & Stack</span>
+      </button>
+      <button class="nav-dot" data-index="2" onclick="goToSection(2)" aria-label="Section Projets">
+        <span class="dot-ring"></span>
+        <span class="dot-tooltip">03. Projets Clés</span>
+      </button>
+      <button class="nav-dot" data-index="3" onclick="goToSection(3)" aria-label="Section Contact">
+        <span class="dot-ring"></span>
+        <span class="dot-tooltip">04. Contact</span>
+      </button>
+    </nav>
+
+    <!-- Flèches Haut / Bas -->
+    <div class="nav-arrows">
+      <button class="arrow-btn" id="prev-btn" onclick="prevSection()" title="Section précédente (ou Flèche Haut)">
+        <i class="fas fa-chevron-up"></i>
+      </button>
+      <button class="arrow-btn" id="next-btn" onclick="nextSection()" title="Section suivante (ou Flèche Bas)">
+        <i class="fas fa-chevron-down"></i>
+      </button>
     </div>
 
-    <div class="fixed-viewport">
-      <!-- Slide 0: Intro avec écriture -->
-      <div class="slide" id="slide-0">
-        <div class="glass-panel" style="justify-content: center">
-          <img src="moi.png" alt="" srcset="" />
-          <h1 id="name-text"></h1>
-          <p>Développeur Fullstack & Architecte Logiciel</p>
-          <span class="mono" id="welcome-text"></span>
-          <div
-            style="
-              margin-top: 20px;
-              color: var(--accent-primary);
-              font-size: 1.5rem;
-            "
-          >
-            <i class="fas fa-code"></i> <span style="margin: 0 10px">•</span>
-            <i class="fas fa-layer-group"></i>
-            <span style="margin: 0 10px">•</span> <i class="fas fa-rocket"></i>
-          </div>
-          <p style="margin-top: 30px">
-            Scrollez pour découvrir mes projets et réalisations.
-          </p>
-          <i
-            class="fas fa-chevron-down"
-            style="margin-top: 20px; animation: bounce 2s infinite"
-          ></i>
-        </div>
-      </div>
+    <!-- Indicateur d'étape (Ex: 01 / 04) -->
+    <div class="section-counter">
+      <span id="current-step" class="step-active">01</span>
+      <span class="step-slash">/</span>
+      <span class="step-total">04</span>
+    </div>
 
-      <!-- Slide 1: Profil -->
-      <div class="slide" id="slide-1">
-        <div class="glass-panel">
-          <span class="mono">01. Profil & Outils</span>
-          <h2>Ingénierie et Créativité</h2>
-          <p>
-            Je conçois des solutions digitales complètes : du Backend solide
-            avec Java/Spring au Frontend immersif avec Flutter, Angular et
-            Ionic.
+    <!-- ══════════════════════════════════════════════════════
+         SCÈNE 3D UNIQUE PLEIN ÉCRAN
+    ══════════════════════════════════════════════════════ -->
+    <main class="fixed-viewport" id="viewport">
+
+      <!-- ── SECTION 0 : HERO / ACCUEIL ── -->
+      <section class="section is-active" id="sec-0" data-index="0">
+        <div class="glass-card hero-card">
+          
+          <div class="status-badge">
+            <span class="status-pulse"></span>
+            <span>Disponible • Missions Freelance & CDI</span>
+          </div>
+
+          <div class="avatar-container">
+            <div class="avatar-glow"></div>
+            <div class="avatar-ring"></div>
+            <img src="moi.png" alt="Ibrahim Sory Diallo" class="avatar-img" />
+          </div>
+
+          <div class="hero-header">
+            <div class="code-bracket-tag">&lt;software-engineer&gt;</div>
+            <h1 class="hero-name">
+              <span class="name-bracket">&lt;/</span>
+              <span id="type-name">Ibrahim Sory Diallo</span>
+              <span class="name-bracket">&gt;</span>
+            </h1>
+            <p class="hero-role">
+              Architecte Digital <span class="gradient-separator">•</span> Développeur Fullstack
+            </p>
+            <p class="hero-typing-sub" id="type-welcome">
+              Concepteur de solutions logicielles complètes, robustes et immersives.
+            </p>
+          </div>
+
+          <div class="pill-group">
+            <span class="skill-pill"><i class="fas fa-server"></i> Backend Java / Spring</span>
+            <span class="skill-pill"><i class="fas fa-laptop-code"></i> Frontend Angular / Flutter</span>
+            <span class="skill-pill"><i class="fas fa-shield-halved"></i> Clean Architecture</span>
+            <span class="skill-pill"><i class="fas fa-rocket"></i> Performance</span>
+          </div>
+
+          <div class="scroll-invitation" onclick="nextSection()">
+            <span class="scroll-text">Scrollez pour découvrir</span>
+            <div class="mouse-icon">
+              <div class="mouse-wheel"></div>
+            </div>
+            <i class="fas fa-chevron-down scroll-arrow"></i>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── SECTION 1 : PROFIL & STACK TECHNIQUE ── -->
+      <section class="section is-in-background" id="sec-1" data-index="1">
+        <div class="glass-card profile-card">
+          
+          <div class="section-badge">
+            <i class="fas fa-terminal"></i> 01. Profil & Expertise
+          </div>
+
+          <h2 class="section-title">
+            Ingénierie <span class="gradient-text">& Créativité</span>
+          </h2>
+
+          <p class="section-subtitle">
+            Je conçois des solutions complètes : du <strong>Backend solide (Java / Spring Boot)</strong> 
+            au <strong>Frontend immersif & mobile (Angular, Flutter, Laravel)</strong>, avec un focus permanent sur la performance et l'expérience utilisateur.
           </p>
-          <p>
-            Mon approche est centrée sur la performance, la scalabilité et
-            l’expérience utilisateur, avec un accent sur les projets innovants
-            et inclusifs.
+
+          <!-- Grille des technos -->
+          <div class="tech-container">
+            <div class="tech-card">
+              <div class="tech-icon-wrap icon-java"><i class="fab fa-java"></i></div>
+              <span class="tech-name">Java</span>
+              <span class="tech-level">Expertise Backend</span>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-icon-wrap icon-spring"><i class="fas fa-leaf"></i></div>
+              <span class="tech-name">Spring Boot</span>
+              <span class="tech-level">API REST & Microservices</span>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-icon-wrap icon-angular"><i class="fab fa-angular"></i></div>
+              <span class="tech-name">Angular</span>
+              <span class="tech-level">Single Page Apps</span>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-icon-wrap icon-flutter"><i class="fas fa-mobile-screen-button"></i></div>
+              <span class="tech-name">Flutter</span>
+              <span class="tech-level">Mobile iOS & Android</span>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-icon-wrap icon-laravel"><i class="fab fa-laravel"></i></div>
+              <span class="tech-name">Laravel</span>
+              <span class="tech-level">Fullstack PHP</span>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-icon-wrap icon-docker"><i class="fab fa-docker"></i></div>
+              <span class="tech-name">Docker</span>
+              <span class="tech-level">Conteneurisation</span>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-icon-wrap icon-db"><i class="fas fa-database"></i></div>
+              <span class="tech-name">MySQL / SQLite</span>
+              <span class="tech-level">Bases de Données</span>
+            </div>
+
+            <div class="tech-card">
+              <div class="tech-icon-wrap icon-figma"><i class="fab fa-figma"></i></div>
+              <span class="tech-name">Figma</span>
+              <span class="tech-level">UI / UX Design</span>
+            </div>
+          </div>
+
+          <!-- Piliers de compétences -->
+          <div class="profile-stats">
+            <div class="stat-item">
+              <span class="stat-num">Fullstack & Mobile</span>
+              <span class="stat-label">Web, iOS, Android & Cloud</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">Clean Architecture</span>
+              <span class="stat-label">Code maintenable, testé & sécurisé</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">Méthode Agile</span>
+              <span class="stat-label">Livraison rapide & communication fluide</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── SECTION 2 : RÉALISATIONS / PROJETS CLÉS ── -->
+      <section class="section is-in-background" id="sec-2" data-index="2">
+        <div class="glass-card projects-card">
+          
+          <div class="section-badge">
+            <i class="fas fa-folder-open"></i> 02. Réalisations
+          </div>
+
+          <h2 class="section-title">
+            Projets <span class="gradient-text">Clés</span>
+          </h2>
+
+          <p class="section-subtitle">
+            Démonstrations concrètes de mes réalisations logicielles, combinant architecture solide et interface fluide.
           </p>
-          <span class="mono" >Je travaille avec les technologies suivantes</span>
-          <div class="tech-grid">
+
+          <!-- Grille des 3 Projets -->
+          <div class="projects-grid">
             
-            <div class="tech-item">
-              <i class="fab fa-java"></i><span>Java</span>
+            <!-- Projet 1 -->
+            <div class="project-item">
+              <div class="video-container">
+                <iframe
+                  src="https://www.youtube.com/embed/sQmbPg_qxN4?si=1UFLrd1cFWmMYn3U"
+                  title="Gestion de Boutique Angular & SQLite"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <div class="project-details">
+                <div class="project-top">
+                  <span class="project-badge solo">Projet Solo</span>
+                </div>
+                <h3 class="project-heading">Plateforme Gestion de Boutique</h3>
+                <p class="project-desc">
+                  Gestion commerciale intégrée avec catalogue dynamique, facturation et synchronisation de données.
+                </p>
+                <div class="project-tech-tags">
+                  <span class="tech-tag">Angular</span>
+                  <span class="tech-tag">Laravel</span>
+                  <span class="tech-tag">SQLite</span>
+                </div>
+              </div>
             </div>
-            <div class="tech-item">
-              <i class="fas fa-leaf"></i><span>Spring</span>
-            </div>
-            <div class="tech-item">
-              <i class="fab fa-angular"></i><span>Angular</span>
-            </div>
-            <div class="tech-item">
-              <i class="fab fa-laravel"></i><span>Laravel</span>
-            </div>
-            <div class="tech-item">
-              <i class="fas fa-mobile-alt"></i><span>Flutter</span>
-            </div>
-            <div class="tech-item">
-              <i class="fab fa-docker"></i><span>Docker</span>
-            </div>
-            <div class="tech-item">
-              <i class="fab fa-figma"></i><span>Figma</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Slide 2: Projets -->
-      <div class="slide" id="slide-2">
-        <div class="glass-panel">
-          <span class="mono">02. Réalisations</span>
-          <h2>Projets Clés</h2>
-          <p>
-            Voici quelques projets sur lesquels j'ai travaillé, illustrant mes
-            compétences en développement Fullstack et gestion de projet digital.
+            <!-- Projet 2 -->
+            <div class="project-item">
+              <div class="video-container">
+                <iframe
+                  src="https://www.youtube.com/embed/f-bxHu1qpzc?si=73q7hUr8RvWq7dCp"
+                  title="Application Console Java Sécurisée"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <div class="project-details">
+                <div class="project-top">
+                  <span class="project-badge collab">En Collaboration</span>
+                </div>
+                <h3 class="project-heading">Application Console Sécurisée</h3>
+                <p class="project-desc">
+                  Système Java orienté objet avec contrôle d'accès rigoureux, persistance MySQL et modules sécurisés.
+                </p>
+                <div class="project-tech-tags">
+                  <span class="tech-tag">Java</span>
+                  <span class="tech-tag">MySQL</span>
+                  <span class="tech-tag">Sécurité</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Projet 3 -->
+            <div class="project-item">
+              <div class="video-container showcase-preview">
+                <div class="showcase-content">
+                  <div class="showcase-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                  <span class="showcase-tag">SuperApp Mobile & Web</span>
+                </div>
+              </div>
+              <div class="project-details">
+                <div class="project-top">
+                  <span class="project-badge binome">En Binôme</span>
+                </div>
+                <h3 class="project-heading">ACT — SuperApp Don & Association</h3>
+                <p class="project-desc">
+                  Écosystème digital pour la gestion associative, collecte de dons transparente et flux multi-plateformes.
+                </p>
+                <div class="project-tech-tags">
+                  <span class="tech-tag">Flutter</span>
+                  <span class="tech-tag">Angular</span>
+                  <span class="tech-tag">Spring Boot</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── SECTION 3 : CONTACT & COLLABORATION ── -->
+      <section class="section is-in-background" id="sec-3" data-index="3">
+        <div class="glass-card contact-card">
+          
+          <div class="section-badge">
+            <i class="fas fa-paper-plane"></i> 03. Contact
+          </div>
+
+          <h2 class="section-title">
+            Prêt à donner vie à vos <span class="gradient-text">projets ?</span>
+          </h2>
+
+          <p class="section-subtitle">
+            Je suis disponible pour échanger sur vos opportunités : missions <strong>Freelance</strong>, 
+            poste en <strong>CDI</strong> ou projets innovants.
           </p>
-          <div class="projects-wrapper">
-            <div class="project-card">
-              <div class="video-container">
-                <iframe
-                  src="https://youtube.com/embed/sQmbPg_qxN4?si=1UFLrd1cFWmMYn3U"
-                  title="Tutoriel Projet Gestion de Boutique avec Angular et SQLite"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                >
-                </iframe>
-              </div>
-              <div class="project-info">
-                <h3>Plateforme Gestion de Boutique : En Solo</h3>
-                <div class="project-tags">
-                  <span>Angular</span><span>Laravel</span><span>Sqlite</span>
-                </div>
-              </div>
-            </div>
 
-            <div class="project-card">
-              <div class="video-container">
-                <iframe
-                  src="https://youtube.com/embed/f-bxHu1qpzc?si=73q7hUr8RvWq7dCp"
-                  title="Application Console : En Collaboration"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                >
-                </iframe>
-              </div>
-              <div class="project-info">
-                <h3>Application Console : En Collaboration</h3>
-                <div class="project-tags">
-                  <span>Java</span><span>MySql</span><span>Sécurité</span>
-                </div>
-              </div>
-            </div>
+          <div class="contact-actions">
+            <a href="mailto:colonel.diallo19@gmail.com" class="btn-glow-primary" id="email-btn">
+              <i class="fas fa-envelope"></i>
+              <span>Me contacter par email</span>
+            </a>
 
-            <div class="project-card">
-              <div class="video-container">
-                <iframe
-                  src="#"
-                  title="ACT - SuperApp de Gestion d'Association & Don : Binome"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                >
-                </iframe>
-              </div>
-              <div class="project-info">
-                <h3>ACT - SuperApp de Gestion d'Association & Don : Binome</h3>
-                <div class="project-tags">
-                  <span>Flutter</span><span>Angular</span
-                  ><span>SpringBoot</span>
-                </div>
-              </div>
-            </div>
+            <button class="btn-copy-email" onclick="copyEmail()" id="copy-btn" title="Copier l'adresse email">
+              <i class="fas fa-copy"></i>
+              <span id="copy-text">colonel.diallo19@gmail.com</span>
+            </button>
           </div>
-        </div>
-      </div>
 
-      <!-- Slide 3: Contact -->
-      <div class="slide" id="slide-3">
-        <div class="glass-panel" style="justify-content: center">
-          <span class="mono">03. Contact</span>
-          <h2>Prêt à collaborer ?</h2>
-          <p>
-            Je suis disponible pour des missions Freelance ou CDI. Ensemble,
-            nous pouvons transformer vos idées en solutions digitales concrètes
-            et performantes.
-          </p>
-          <a href="mailto:colonel.diallo19@gmail.com" class="btn"
-            >Me contacter <i class="fas fa-paper-plane"></i
-          ></a>
-          <div
-            style="margin-top: 50px; display: flex; gap: 20px; font-size: 2rem"
-          >
-            <a
-              href="https://www.linkedin.com/in/ibrahim-skypper-diallo/"
-              style="color: #fff"
-              ><i class="fab fa-linkedin"></i
-            ></a>
-            <a href="https://github.com/skypper109" style="color: #fff"
-              ><i class="fab fa-github"></i
-            ></a>
-            <a href="https://wa.me/22382200766" style="color: #fff"
-              ><i class="fab fa-whatsapp"></i
-            ></a>
+          <div class="social-links-container">
+            <a href="https://www.linkedin.com/in/ibrahim-skypper-diallo/" target="_blank" rel="noopener noreferrer" class="social-btn linkedin" title="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+              <span class="social-label">LinkedIn</span>
+            </a>
+            <a href="https://github.com/skypper109" target="_blank" rel="noopener noreferrer" class="social-btn github" title="GitHub">
+              <i class="fab fa-github"></i>
+              <span class="social-label">GitHub</span>
+            </a>
+            <a href="https://wa.me/22382200766" target="_blank" rel="noopener noreferrer" class="social-btn whatsapp" title="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+              <span class="social-label">WhatsApp</span>
+            </a>
           </div>
-        </div>
-      </div>
 
-      <!-- Slide 4: Finale avec SVG et mot de fin -->
-      <div class="slide" id="slide-4">
-        <div
-          class="glass-panel"
-          style="justify-content: center; align-items: center"
-        >
-          <span class="logo-hero">
-            <!-- Réinsérer le SVG du logo ici -->
-            <svg
-              width="300"
-              height="200"
-              viewBox="0 0 300 200"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <text
-                x="40"
-                y="80"
-                class="small-a"
-                style="
-                  font-family: 'Georgia', serif;
-                  font-size: 72px;
-                  font-weight: 300;
-                  fill: #ececec;
-                "
-              >
-                a
-              </text>
-              <text
-                x="120"
-                y="150"
-                class="big-d"
-                style="
-                  font-family: 'Poppins', sans-serif;
-                  font-size: 140px;
-                  font-weight: 700;
-                  fill: #f0f0f0;
-                "
-              >
-                D
-              </text>
-              <text
-                x="40"
-                y="190"
-                class="subtitle"
-                style="
-                  font-family: 'Poppins', sans-serif;
-                  font-size: 20px;
-                  fill: #e1e1e1;
-                  letter-spacing: 2px;
-                "
-              >
-                ARCHITECTE DIGITAL
-              </text>
+          <div class="digital-architect-sig">
+            <svg width="220" height="85" viewBox="0 0 300 130" xmlns="http://www.w3.org/2000/svg" aria-label="Logo Ibrahim Sory Diallo">
+              <defs>
+                <linearGradient id="sigGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00d4ff" />
+                  <stop offset="50%" stop-color="#7b5cfa" />
+                  <stop offset="100%" stop-color="#f43f5e" />
+                </linearGradient>
+              </defs>
+              <text x="50" y="65" style="font-family:'Outfit',serif;font-size:58px;font-weight:300;fill:url(#sigGrad);opacity:0.85;">a</text>
+              <text x="110" y="80" style="font-family:'Outfit',sans-serif;font-size:90px;font-weight:900;fill:url(#sigGrad);opacity:0.95;">D</text>
+              <text x="40" y="112" style="font-family:'Fira Code',monospace;font-size:13px;font-weight:600;fill:#a78bfa;letter-spacing:4px;">ARCHITECTE DIGITAL</text>
             </svg>
-          </span>
-          <p
-            style="
-              margin-top: 30px;
-              font-size: 1.5rem;
-              color: var(--accent-primary);
-            "
-          >
-            Merci pour votre visite !
-          </p>
+            <p class="footer-copy">© Ibrahim Sory Diallo • Tous droits réservés</p>
+          </div>
+
         </div>
-      </div>
-    </div>
+      </section>
+
+    </main>
+
+    <!-- Script principal -->
+    <script src="script.js"></script>
   </body>
 </html>
